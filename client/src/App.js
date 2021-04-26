@@ -41,10 +41,7 @@ const App = () => {
 
   const [open , setOpen] = useState(false);
 
-  useEffect(() => {
-    console.log("denememeeee");
-    dispatch(fetchPosts()) 
-  }, [])
+
 
   const handleOpen = () => {
     setOpen(true)

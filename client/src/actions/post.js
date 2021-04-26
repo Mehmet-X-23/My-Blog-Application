@@ -1,12 +1,12 @@
 import * as api from "../api/index";
 import * as types from "./types";
-
+import {store} from "../index";
 
 //action-creater
 export const fetchPosts = () => async (dispatch) => {
    try {
        const {data} = await api.fetchPosts()
-       dispatch({
+       store.dispatch({
            type: types.FETCH_POSTS,
            payload: data
        })
@@ -18,7 +18,7 @@ export const fetchPosts = () => async (dispatch) => {
 export const createPost = (post) => async (dispatch) => {
     try {
         const {data} = await api.createPost(post)
-        dispatch({
+        store.dispatch({
             type: types.CREATE_POST,
             payload: data
         })
