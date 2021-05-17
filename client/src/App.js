@@ -1,6 +1,14 @@
-import React, { Fragment , useState , useEffect} from "react";
+  
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchPosts } from "./actions/post";
 import { makeStyles } from "@material-ui/core/styles";
-import {useDispatch} from "react-redux";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import {
   CssBaseline,
   Container,
@@ -11,16 +19,11 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/MenuBook";
 import PenIcon from "@material-ui/icons/Create";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
-import PostLists from "./components/postLists";
+import PostsList from "./components/PostLists";
 import AddPostForm from "./components/AddPostForm";
-import {fetchPosts} from  "./actions/post";
+import PostDetails from "./components/PostDetails";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,25 +39,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
 }));
+
 const App = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [open , setOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
   useEffect(() => {
-    console.log("denememeeee");
-    dispatch(fetchPosts()) 
-  }, [])
+    dispatch(fetchPosts());
+  }, [dispatch]);
 
   const handleOpen = () => {
-    setOpen(true)
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false)
+    setOpen(false);
   };
-
-
+ 
   const classes = useStyles();
   return (
     <>
@@ -62,38 +63,48 @@ const App = () => {
       <Container maxWidth="lg">
         <AppBar position="static" color="inherit" elevation={0}>
           <Toolbar>
-            {/* <IconButton
+            <IconButton
               edge="start"
+              className={classes.menuButton}
               color="inherit"
-              className={classes.container}
-            /> */}
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+
             <Typography
               variant="h6"
               color="secondary"
               className={classes.title}
             >
-              <a href="http://localhost:3000/posts">My Blog</a>
+              <a href="http://localhost:3000/posts">Blogify</a>
             </Typography>
-            <Button color="primary" variant="outlined" startIcon={<PenIcon />} onClick={handleOpen}>
-              {" "}
-              Yeni Yazı{" "}
+
+            <Button
+              color="primary"
+              variant="outlined"
+              startIcon={<PenIcon />}
+              onClick={handleOpen}
+            >
+              Yeni Yazı
             </Button>
           </Toolbar>
         </AppBar>
-
         <Grid container className={classes.container}>
           <Grid item xs={12}>
             <Router>
               <Switch>
-                <Route exact path="/posts" component={PostLists} />
+                <Route exact path="/posts" component={PostsList} />
+                <Route exact path="/posts/:id" component={PostDetails} />
               </Switch>
               <Redirect from="/" to="/posts" />
             </Router>
           </Grid>
         </Grid>
-      </Container>
 
-      <AddPostForm open={open} handleClose={handleClose} />
+        <AddPostForm open={open} handleClose={handleClose} />
+
+      </Container>
     </>
   );
 };

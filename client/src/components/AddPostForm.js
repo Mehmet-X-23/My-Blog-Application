@@ -61,9 +61,6 @@ const AddPostForm = ({ open, handleClose }) => {
     handleClose();
  };
 
-//  useEffect(() => {
-//   dispatch(fetchPosts()) 
-// }, [dispatch])
 
   const classes = useStyles();
 
@@ -132,7 +129,10 @@ const AddPostForm = ({ open, handleClose }) => {
               error={errors?.content ? true : false}
             />
 
-            <FileBase64 multiple={false} onDone={({base64}) => setFile(base64)} />
+            <FileBase64
+              multiple={false}
+              onDone={({ base64 }) => setFile(base64)}
+            />
 
           </form>
         </div>
